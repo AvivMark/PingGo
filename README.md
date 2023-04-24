@@ -1,5 +1,7 @@
 # PINGER-API
 Api built in go, use this api to create a self monitoring api 
+This service include a dashboard to view the current status fo the services
+
 
 ## Configuration
 
