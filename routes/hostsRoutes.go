@@ -1,4 +1,4 @@
-package main
+package hostsRoutes
 
 import (
 	"encoding/json"

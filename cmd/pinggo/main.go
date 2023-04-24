@@ -10,7 +10,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/AvivMark/PingGo/models"
+	"github.com/AvivMark/PingGo/models/group"
+	"github.com/AvivMark/PingGo/models/host"
 	"github.com/AvivMark/PingGo/routes"
 )
 
