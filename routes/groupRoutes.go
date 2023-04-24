@@ -7,13 +7,16 @@ import (
 	"sync"
 
 	"github.com/gorilla/mux"
+	hostModel "github.com/AvivMark/PingGo/models/host"
+	groupModel "github.com/AvivMark/PingGo/models/group"
+	utils "github.com/AvivMark/PingGo/utils"
 )
 
 // Groups Functions
 func getGroupsList() []string {
 	var Groups []string
 	for _, host := range Hosts {
-		inSlice := contains(Groups, host.Group)
+		inSlice := utils.contains(Groups, groupModel.Group)
 		if inSlice == false {
 			Groups = append(Groups, host.Group)
 		}
@@ -21,8 +24,8 @@ func getGroupsList() []string {
 	return Groups
 }
 
-func findGroupHosts(groupName string) []Host {
-	var GroupHosts []Host = []Host{}
+func findGroupHosts(groupName string) []hostModel.Host {
+	var GroupHosts []hostModel.Host = []hostModel.Host{}
 
 	for _, host := range Hosts {
 		if host.Group == groupName {

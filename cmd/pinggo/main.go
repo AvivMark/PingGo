@@ -12,8 +12,7 @@ import (
 
 	group "github.com/AvivMark/PingGo/models/group"
 	host "github.com/AvivMark/PingGo/models/host"
-	groupRoutes "github.com/AvivMark/PingGo/routes/group/groupRoutes"
-	hostsRoutes "github.com/AvivMark/PingGo/routes/hosts/hostsRoutes"
+	routes "github.com/AvivMark/PingGo/routes"
 )
 
 var PORT string = "5000"        // APP PORT

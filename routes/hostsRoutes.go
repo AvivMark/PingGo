@@ -8,9 +8,11 @@ import (
 	"sync"
 
 	"github.com/gorilla/mux"
+	hostModel "github.com/AvivMark/PingGo/models/host"
+
 )
 
-var Hosts []Host //list of the hosts
+var Hosts []hostModel.Host //list of the hosts
 
 func returnAllHostsWithPing(w http.ResponseWriter, r *http.Request) {
 	log.Printf("EndpointHit: returnAllHostsWithPing")
@@ -35,7 +37,7 @@ func returnAllHosts(w http.ResponseWriter, r *http.Request) {
 func getHostWithPing(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["ID"]
-	hostFound := Host{}
+	hostFound := hostModel.Host{}
 	for _, host := range Hosts {
 		if host.ID == key {
 			hostFound = host
@@ -61,7 +63,7 @@ func getHostWithPing(w http.ResponseWriter, r *http.Request) {
 func getHost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["ID"]
-	hostFound := Host{}
+	hostFound := hostModel.Host{}
 	for _, host := range Hosts {
 		if host.ID == key {
 			hostFound = host
@@ -84,7 +86,7 @@ func getHost(w http.ResponseWriter, r *http.Request) {
 
 func createHost(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	var host Host
+	var host hostModel.Host
 	json.Unmarshal(reqBody, &host)
 	Hosts = append(Hosts, host)
 	log.Printf("EndpointHit: added Host!")
@@ -105,7 +107,7 @@ func deleteHost(w http.ResponseWriter, r *http.Request) {
 
 func updateHost(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
-	var hostToUpdate Host
+	var hostToUpdate hostModel.Host
 	json.Unmarshal(reqBody, &hostToUpdate)
 
 	for i, host := range Hosts {
