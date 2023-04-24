@@ -10,9 +10,9 @@ import (
 
 	"github.com/gorilla/mux"
 
-	"github.com/AvivMark/PingGo/models/group"
-	"github.com/AvivMark/PingGo/models/host"
-	"github.com/AvivMark/PingGo/routes"
+	group "github.com/AvivMark/PingGo/models/group"
+	host "github.com/AvivMark/PingGo/models/host"
+	"github.com/AvivMark/PingGo/routes/groupRoutes"
 )
 
 var PORT string = "5000"        // APP PORT

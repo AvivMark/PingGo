@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	host "github.com/AvivMark/PingGo/models/host"
 )
 
 // host struct
@@ -11,7 +12,7 @@ type Group struct {
 	ID          string `json:"ID"`               // ID
 	Group       string `json:"groupName"`        // Group Name
 	Description string `json:"groupDescription"` // Description
-	Hosts       []Host `json:"hosts"`            // Hosts
+	Hosts       []host.Host `json:"hosts"`            // Hosts
 }
 
 // /////////////////////////////////////////////// Host util functions
