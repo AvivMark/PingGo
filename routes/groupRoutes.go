@@ -1,4 +1,4 @@
-package groupRoutes
+package routes
 
 import (
 	"encoding/json"
