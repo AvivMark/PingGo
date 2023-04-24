@@ -1,4 +1,4 @@
-module pingerApi
+module github.com/AvivMark/PingGo
 
 go 1.19
 

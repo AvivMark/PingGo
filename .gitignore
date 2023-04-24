@@ -21,7 +21,9 @@
 go.work
 
 
+/**/**/node_modules
+
 /**/node_modules
 
-/ui/build
+/web/ui/build
 
