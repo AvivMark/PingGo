@@ -14,14 +14,14 @@ import (
 
 var Hosts []hostModel.Host //list of the hosts
 
-func returnAllHostsWithPing(w http.ResponseWriter, r *http.Request) {
+func ReturnAllHostsWithPing(w http.ResponseWriter, r *http.Request) {
 	log.Printf("EndpointHit: returnAllHostsWithPing")
 	var wg sync.WaitGroup
 	for i := range Hosts {
 		wg.Add(1)
 		go func(i int) {
 			defer wg.Done()
-			pingHost(&Hosts[i])
+			hostModel.PingHost(&Hosts[i])
 		}(i)
 	}
 	wg.Wait()
@@ -29,12 +29,12 @@ func returnAllHostsWithPing(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(Hosts)
 }
 
-func returnAllHosts(w http.ResponseWriter, r *http.Request) {
+func ReturnAllHosts(w http.ResponseWriter, r *http.Request) {
 	log.Printf("EndpointHit: returnAllHosts")
 	json.NewEncoder(w).Encode(Hosts)
 }
 
-func getHostWithPing(w http.ResponseWriter, r *http.Request) {
+func GetHostWithPing(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["ID"]
 	hostFound := hostModel.Host{}
@@ -50,7 +50,7 @@ func getHostWithPing(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if hostFound.HostIP != "" {
-		pingHost(&hostFound)
+		hostModel.PingHost(&hostFound)
 		log.Printf("EndpointHit: getHostWithPing for host %s", hostFound.Hostname)
 		json.NewEncoder(w).Encode(hostFound)
 	} else {
@@ -60,7 +60,7 @@ func getHostWithPing(w http.ResponseWriter, r *http.Request) {
 }
 
 // Host List Edit Functions
-func getHost(w http.ResponseWriter, r *http.Request) {
+func GetHost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["ID"]
 	hostFound := hostModel.Host{}
@@ -84,7 +84,7 @@ func getHost(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func createHost(w http.ResponseWriter, r *http.Request) {
+func CreateHost(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var host hostModel.Host
 	json.Unmarshal(reqBody, &host)
@@ -93,7 +93,7 @@ func createHost(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(host)
 }
 
-func deleteHost(w http.ResponseWriter, r *http.Request) {
+func DeleteHost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["ID"]
 
@@ -105,7 +105,7 @@ func deleteHost(w http.ResponseWriter, r *http.Request) {
 	log.Printf("EndpointHit: deleted Host!")
 }
 
-func updateHost(w http.ResponseWriter, r *http.Request) {
+func UpdateHost(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var hostToUpdate hostModel.Host
 	json.Unmarshal(reqBody, &hostToUpdate)

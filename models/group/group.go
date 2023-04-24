@@ -16,7 +16,7 @@ type Group struct {
 }
 
 // /////////////////////////////////////////////// Host util functions
-func getGroupsFromJson(p string) (groups []Group) {
+func GetGroupsFromJson(p string) (groups []Group) {
 	content, err := ioutil.ReadFile(p)
 
 	if err != nil {
@@ -32,7 +32,7 @@ func getGroupsFromJson(p string) (groups []Group) {
 	return *tmp
 }
 
-func pingGroup(Group *Group) {
+func PingGroup(Group *Group) {
 }
 
 // //////

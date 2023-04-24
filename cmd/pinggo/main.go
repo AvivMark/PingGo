@@ -10,15 +10,14 @@ import (
 
 	"github.com/gorilla/mux"
 
-	group "github.com/AvivMark/PingGo/models/group"
-	host "github.com/AvivMark/PingGo/models/host"
+	hostModel "github.com/AvivMark/PingGo/models/host"
 	routes "github.com/AvivMark/PingGo/routes"
 )
 
 var PORT string = "5000"        // APP PORT
 var JsonFilePath = "hosts.json" // JSON file path
 var DebugMode = false
-
+var Hosts []hostModel.Host
 // ///////// UI ROUTES FUNCTIONS
 func homePage(w http.ResponseWriter, r *http.Request) {
 }
@@ -26,13 +25,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 // ///////// Utils functions
 
 // Function creates 100 demo servers for tests only
-func Get100Servers() []Host {
-	hostsOverload := []Host{}
+func Get100Servers() []hostModel.Host {
+	hostsOverload := []hostModel.Host{}
 	for i := 1; i < 121; i++ {
 		numStr := strconv.Itoa(i)
 		name := "server-" + numStr
 		groupNum := strconv.Itoa(i / 12)
-		newHost := Host{
+		newHost := hostModel.Host{
 			ID:       numStr,
 			Hostname: name,
 			HostIP:   "172.17.17." + numStr,
@@ -47,20 +46,9 @@ func Get100Servers() []Host {
 
 // ROUTE TO  RELOAD HOSTS FROM JSON FILE
 func refresh(w http.ResponseWriter, r *http.Request) {
-	Hosts = getHostsFromJson(JsonFilePath)
+	Hosts = hostModel.GetHostsFromJson(JsonFilePath)
 	log.Printf("EndpointHit: Refreshed app!")
 }
-
-func contains(s []string, str string) bool {
-	for _, v := range s {
-		if v == str {
-			return true
-		}
-	}
-
-	return false
-}
-
 // Routes main Declaration function
 func handleRequest() {
 	r := mux.NewRouter()
@@ -69,20 +57,20 @@ func handleRequest() {
 	r.HandleFunc("/refresh", refresh)
 
 	// Host routes
-	r.HandleFunc("/host", createHost).Methods("POST")
-	r.HandleFunc("/hostUpdate", updateHost).Methods("PUT")
-	r.HandleFunc("/host/{ID}", deleteHost).Methods("DELETE")
-	r.HandleFunc("/host/{ID}", getHost)
-	r.HandleFunc("/hostAvailable/{ID}", getHostWithPing)
+	r.HandleFunc("/host", routes.CreateHost).Methods("POST")
+	r.HandleFunc("/hostUpdate", routes.UpdateHost).Methods("PUT")
+	r.HandleFunc("/host/{ID}", routes.DeleteHost).Methods("DELETE")
+	r.HandleFunc("/host/{ID}", routes.GetHost)
+	r.HandleFunc("/hostAvailable/{ID}", routes.GetHostWithPing)
 
 	// Hosts routes
-	r.HandleFunc("/hosts", returnAllHosts)
-	r.HandleFunc("/hostsAvailable", returnAllHostsWithPing)
+	r.HandleFunc("/hosts", routes.ReturnAllHosts)
+	r.HandleFunc("/hostsAvailable", routes.ReturnAllHostsWithPing)
 
 	// Groups Routes
-	r.HandleFunc("/getGroupHosts/{GroupName}", getGroupHosts)
-	r.HandleFunc("/getGroupAvailable/{GroupName}", getGroupAvailable)
-	r.HandleFunc("/getGroups", getGroups)
+	r.HandleFunc("/getGroupHosts/{GroupName}", routes.GetGroupHosts)
+	r.HandleFunc("/getGroupAvailable/{GroupName}", routes.GetGroupAvailable)
+	r.HandleFunc("/getGroups", routes.GetGroups)
 
 	//UI Routes
 	// Set up a route for the reverse proxy.
@@ -104,7 +92,7 @@ func main() {
 			DebugMode = true
 		}
 	} else {
-		Hosts = getHostsFromJson(JsonFilePath)
+		Hosts = hostModel.GetHostsFromJson(JsonFilePath)
 	}
 
 	if DebugMode {

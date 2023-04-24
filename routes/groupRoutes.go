@@ -8,15 +8,14 @@ import (
 
 	"github.com/gorilla/mux"
 	hostModel "github.com/AvivMark/PingGo/models/host"
-	groupModel "github.com/AvivMark/PingGo/models/group"
-	utils "github.com/AvivMark/PingGo/utils"
+	"github.com/AvivMark/PingGo/utils"
 )
 
 // Groups Functions
-func getGroupsList() []string {
+func GetGroupsList() []string {
 	var Groups []string
 	for _, host := range Hosts {
-		inSlice := utils.contains(Groups, groupModel.Group)
+		inSlice := utils.Contains(Groups, host.Group)
 		if inSlice == false {
 			Groups = append(Groups, host.Group)
 		}
@@ -24,7 +23,7 @@ func getGroupsList() []string {
 	return Groups
 }
 
-func findGroupHosts(groupName string) []hostModel.Host {
+func FindGroupHosts(groupName string) []hostModel.Host {
 	var GroupHosts []hostModel.Host = []hostModel.Host{}
 
 	for _, host := range Hosts {
@@ -36,33 +35,33 @@ func findGroupHosts(groupName string) []hostModel.Host {
 	return GroupHosts
 }
 
-func getGroups(w http.ResponseWriter, r *http.Request) {
-	GroupsList := getGroupsList()
+func GetGroups(w http.ResponseWriter, r *http.Request) {
+	GroupsList := GetGroupsList()
 	log.Printf("EndpointHit: getGroups")
 	json.NewEncoder(w).Encode(GroupsList)
 }
 
-func getGroupHosts(w http.ResponseWriter, r *http.Request) {
+func GetGroupHosts(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	key := vars["GroupName"]
 
-	groupsHosts := findGroupHosts(key)
+	groupsHosts := FindGroupHosts(key)
 	log.Printf("EndpointHit: getGroupHosts for group: " + key)
 	json.NewEncoder(w).Encode(groupsHosts)
 }
 
-func getGroupAvailable(w http.ResponseWriter, r *http.Request) {
+func GetGroupAvailable(w http.ResponseWriter, r *http.Request) {
 	log.Printf("EndpointHit: getGroupAvailable")
 	vars := mux.Vars(r)
 	key := vars["GroupName"]
-	groupHosts := findGroupHosts(key)
+	groupHosts := FindGroupHosts(key)
 	var wg sync.WaitGroup
 	wg.Wait()
 	for i := range groupHosts {
 		wg.Add(1)
 		go func(i int) {
 			defer wg.Done()
-			pingHost(&groupHosts[i])
+			hostModel.PingHost(&groupHosts[i])
 		}(i)
 	}
 	log.Printf("Got Ping data for group")

@@ -21,7 +21,7 @@ type Host struct {
 }
 
 // /////////////////////////////////////////////// Host util functions
-func getHostsFromJson(p string) (hosts []Host) {
+func GetHostsFromJson(p string) (hosts []Host) {
 	content, err := ioutil.ReadFile(p)
 
 	if err != nil {
@@ -37,7 +37,7 @@ func getHostsFromJson(p string) (hosts []Host) {
 	return *tmp
 }
 
-func pingHost(host *Host) {
+func PingHost(host *Host) {
 	pinger, err := ping.NewPinger(host.HostIP)
 	pinger.SetPrivileged(true)
 	pinger.Timeout = time.Duration(time.Millisecond * 125)
