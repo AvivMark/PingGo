@@ -1,5 +1,6 @@
-# PINGER-API
-Api built in go, use this api to create a self monitoring api 
+## PINGER-API
+![Alt text](https://github.com/AvivMark/PingGo/blob/main/assets/penguin-05.png) </br>
+Api built in go, use this api to create a self monitoring api </br>
 This service include a dashboard to view the current status fo the services
 
 
